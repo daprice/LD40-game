@@ -36,5 +36,10 @@ Ld40.states.Gameplay.prototype = {
 		this.player = game.add.existing(new Ld40.entities.Player(this.game, 90, 90));
 		
 		this.box = game.add.existing(new Ld40.entities.Box(this.game, 40, 40));
+		
+		
+		//camera
+		this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_TOPDOWN, 0.1, 0.1);
+		this.game.camera.roundPx = false;
 	}
 }

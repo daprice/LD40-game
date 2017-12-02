@@ -12,7 +12,7 @@ Ld40.entities.Box = function(game, x = 0, y = 0, xSize = 20, ySize = 20, gamePac
 	this.body.damping = 0.9;
 	this.body.angularDamping = 0.9;
 	
-	this.gamePackage = gamePackage || new Ld40.objects.gamePackage();
+	this.gamePackage = gamePackage || new Ld40.objects.GamePackage();
 };
 
 Ld40.entities.Box.prototype = Object.create(Phaser.Sprite.prototype);

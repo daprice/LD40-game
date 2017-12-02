@@ -20,6 +20,8 @@ Ld40.states.Boot.prototype = {
 	preload: function() {
 		this.load.image('player', 'img/player.png');
 		this.load.image('box', 'img/box.png');
+		this.load.tilemap('map', 'data/map.json', null, Phaser.Tilemap.TILED_JSON);
+		this.load.image('tilemap', 'img/tilemap.png');
 	},
 	
 	create: function() {

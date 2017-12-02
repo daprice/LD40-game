@@ -2,7 +2,6 @@ Ld40.states.Gameplay = function() {};
 
 Ld40.states.Gameplay.prototype = {
 	create: function() {
-		this.game.world.setBounds(0, 0 , 200, 200);
 		
 		//set up physics
 		this.game.physics.startSystem(Phaser.Physics.P2JS);
@@ -18,8 +17,21 @@ Ld40.states.Gameplay.prototype = {
 			return this.collisionGroups[groupName];
 		}
 		
-		this.player = game.add.existing(new Ld40.entities.Player(this.game, 60, 60));
+		//tilemap
+		this.map = this.game.add.tilemap('map');
+		this.map.addTilesetImage('tilemap', 'tilemap');
+		this.layer = this.map.createLayer(0);
+		this.layer.resizeWorld();
 		
-		this.box = game.add.existing(new Ld40.entities.Box(this.game, 20, 20));
+		this.map.setCollision([3, 4, 9, 10, 11, 12, 13, 43, 44, 49, 50, 51, 52, 53]);
+		
+		this.game.physics.p2.convertTilemap(this.map, this.layer);
+		
+		
+		//entities
+		
+		this.player = game.add.existing(new Ld40.entities.Player(this.game, 90, 90));
+		
+		this.box = game.add.existing(new Ld40.entities.Box(this.game, 40, 40));
 	}
 }

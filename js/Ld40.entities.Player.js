@@ -8,14 +8,14 @@ Ld40.entities.Player = function(game, x = 0, y = 0) {
 	this.game.physics.p2.enable(this);
 	
 	//game properties
-	this.turnForce = 0.1;
-	this.goForce = 100;
-	this.stopFactor = 0.99;
+	this.turnForce = 0.05;
+	this.goForce = 350;
+	this.stopFactor = 0.97;
 	
 	//physics properties
 	this.body.mass = 20;
-	this.body.damping = 0.2;
-	this.body.angularDamping = 0.4;
+	this.body.damping = 0.4;
+	this.body.angularDamping = 0.5;
 	
 	//input
 	this.cursors = this.game.input.keyboard.createCursorKeys();
@@ -28,7 +28,7 @@ Ld40.entities.Player.prototype.update = function() {
 	Phaser.Sprite.prototype.update.call(this);
 	
 	//reset angular damping if it was changed by using the stop button
-	this.body.angularDamping = 0.4;
+	this.body.angularDamping = 0.5;
 	
 	if(this.cursors.left.isDown && this.cursors.right.isUp) {
 		this.body.angularVelocity -= this.turnForce;
@@ -43,6 +43,6 @@ Ld40.entities.Player.prototype.update = function() {
 	else if(this.cursors.down.isDown) {
 		this.body.velocity.x *= this.stopFactor;
 		this.body.velocity.y *= this.stopFactor;
-		this.body.angularDamping = 0.8;
+		this.body.angularDamping = 0.9;
 	}
 };

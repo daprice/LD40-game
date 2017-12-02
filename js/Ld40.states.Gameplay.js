@@ -20,12 +20,15 @@ Ld40.states.Gameplay.prototype = {
 		//tilemap
 		this.map = this.game.add.tilemap('map');
 		this.map.addTilesetImage('tilemap', 'tilemap');
-		this.layer = this.map.createLayer(0);
+		this.layer = this.map.createLayer('ground');
+		this.layer1 = this.map.createLayer('landscape');
 		this.layer.resizeWorld();
+		this.layer1.resizeWorld();
 		
-		this.map.setCollision([3, 4, 9, 10, 11, 12, 13, 43, 44, 49, 50, 51, 52, 53]);
+		this.map.collisionLayer = this.layer1;
+		this.map.setCollisionByExclusion([1], true, this.layer1);
 		
-		this.game.physics.p2.convertTilemap(this.map, this.layer);
+		this.game.physics.p2.convertTilemap(this.map, this.layer1);
 		
 		
 		//entities

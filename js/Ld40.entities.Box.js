@@ -1,6 +1,6 @@
-Ld40.entities.Box = function(game, x = 0, y = 0, xSize = 20, ySize = 20, gamePackage) {
+Ld40.entities.Box = function(game, x = 0, y = 0, image = 'box', gamePackage) {
 	//extend Phaser.Sprite
-	Phaser.Sprite.call(this, game, x, y, 'box');
+	Phaser.Sprite.call(this, game, x, y, image);
 	
 	this.state = this.game.state.states[this.game.state.current];
 	

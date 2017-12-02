@@ -9,11 +9,13 @@ Ld40.entities.Player = function(game, x = 0, y = 0) {
 	
 	//game properties
 	this.turnForce = 0.05;
-	this.goForce = 350;
+	this.goForce = 400;
 	this.stopFactor = 0.97;
+	this.gamePackages = [];
+	this.baseMass = 20;
 	
 	//physics properties
-	this.body.mass = 20;
+	this.body.mass = baseMass;
 	this.body.damping = 0.4;
 	this.body.angularDamping = 0.5;
 	
@@ -45,4 +47,17 @@ Ld40.entities.Player.prototype.update = function() {
 		this.body.velocity.y *= this.stopFactor;
 		this.body.angularDamping = 0.9;
 	}
+};
+
+Ld40.entities.Player.prototype.recalculatePhysicsProps = function() {
+	//update mass based on package load
+	this.body.mass = baseMass;
+	for (var p in this.gamePackages) {
+		this.body.mass += p.mass;
+	}
+}
+
+Ld40.entities.Player.prototype.gameLoadPackage = function(thePackage) {
+	this.gamePackageWeights.push(thePackage);
+	this.recalculatePhysicsProps;
 };

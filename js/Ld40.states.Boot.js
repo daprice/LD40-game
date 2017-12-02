@@ -7,7 +7,8 @@ var Ld40 = {
 	},
 	
 	states: {},
-	entities: {}
+	entities: {},
+	objects: {}
 }
 
 Ld40.states.Boot = function() {};

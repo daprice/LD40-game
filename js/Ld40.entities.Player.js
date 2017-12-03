@@ -13,6 +13,7 @@ Ld40.entities.Player = function(game, x = 0, y = 0) {
 	this.stopFactor = 0.97;
 	this.gamePackages = [];
 	this.itemizedReceipt = [];
+	this.damageCost = 0;
 	this.startBudget = 5000;
 	this.budget = this.startBudget;
 	this.baseMass = 20;

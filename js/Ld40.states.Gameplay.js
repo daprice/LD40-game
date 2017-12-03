@@ -70,7 +70,12 @@ Ld40.states.Gameplay.prototype = {
 		var receiptText = '';
 		for(var item of this.player.itemizedReceipt) {
 			priceTotal += item.cost;
-			receiptText += item.name + '...................$' + item.cost.toFixed(2);
+			receiptText += item.name + '...................$' + item.cost.toFixed(2) + '\n';
+		}
+		
+		if(this.player.damageCost > 0) {
+			priceTotal += this.player.damageCost;
+			receiptText += 'DAMAGE...................$' + item.cost.toFixed(2) + '\n';
 		}
 		
 		this.priceTotal.setText('$' + priceTotal.toFixed(2));

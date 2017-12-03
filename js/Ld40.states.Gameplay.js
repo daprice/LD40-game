@@ -122,5 +122,9 @@ Ld40.states.Gameplay.prototype = {
 		});
 		
 		
+	},
+	
+	addDroppedItem: function(theItem) {
+		this.game.add.existing(theItem);
 	}
 }

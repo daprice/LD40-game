@@ -105,6 +105,20 @@ Ld40.entities.Player.prototype.gameLoadPackage = function(thePackage) {
 	console.info('Package loaded on to player cart', thePackage);
 };
 
+//randomly drop an item from the load
+Ld40.entities.Player.prototype.dropItem = function() {
+	if(this.loadedBoxes.length == 0) {return false;}
+	
+	//select a package at random
+	var rand = Math.floor(Math.random() * this.loadedBoxes.length);
+	var thePackage = this.loadedBoxes[rand].gamePackage;
+	
+	this.loadedBoxes[rand].kill();
+	this.loadedBoxes.splice(rand, 1);
+	
+	this.state.addDroppedItem(new Ld40.entities.Box(this.game, this.x, this.y, thePackage));
+};
+
 Ld40.entities.Player.prototype.onHit = function(body1, body2, shape1, shape2, contactEq) {
 	//get relative velocity
 	var rVelX = this.body.velocity.x - body1.velocity.x;
@@ -116,6 +130,14 @@ Ld40.entities.Player.prototype.onHit = function(body1, body2, shape1, shape2, co
 	if(rSpeed < 10) return false;
 	
 	//TODO: play sounds depending on intensity of impact
+	
+	//randomly drop item(s) if impact is hard enough
+	if(rSpeed > 25) {
+		var rand = Math.random();
+		if(rand < rSpeed/100) {
+			this.dropItem();
+		}
+	}
 	
 	//calculate and apply damage cost if the item hasn't already been paid for
 	if(body1.sprite && body1.sprite.gamePackage && !body1.sprite.gamePackage.alreadyPurchased && !body1.sprite.alreadyDamaged) {

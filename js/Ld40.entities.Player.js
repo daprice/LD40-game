@@ -27,6 +27,9 @@ Ld40.entities.Player = function(game, x = 0, y = 0) {
 	//input
 	this.cursors = this.game.input.keyboard.createCursorKeys();
 	this.pickupKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+	
+	//handle hitting things
+	this.body.onBeginContact.add(this.onHit, this);
 };
 
 Ld40.entities.Player.prototype = Object.create(Phaser.Sprite.prototype);
@@ -88,4 +91,27 @@ Ld40.entities.Player.prototype.gameLoadPackage = function(thePackage) {
 	this.gamePackages.push(thePackage);
 	this.recalculatePhysicsProps;
 	console.info('Package loaded on to player', thePackage);
+};
+
+Ld40.entities.Player.prototype.onHit = function(body1, body2, shape1, shape2, contactEq) {
+	//get relative velocity
+	var rVelX = this.body.velocity.x - body1.velocity.x;
+	var rVelY = this.body.velocity.y - body1.velocity.y;
+	var rSpeed = Math.sqrt(rVelX*rVelX + rVelY*rVelY);
+	//console.log(rSpeed);
+	
+	//discard collisions under a certain speed
+	if(rSpeed < 10) return false;
+	
+	//TODO: play sounds depending on intensity of impact
+	
+	//calculate and apply damage cost if the item hasn't already been paid for
+	if(body1.sprite && body1.sprite.gamePackage && !body1.sprite.gamePackage.alreadyPurchased && !body1.sprite.alreadyDamaged) {
+		this.damageCost += body1.sprite.gamePackage.cost;
+		body1.sprite.gamePackage.damage();
+		body1.sprite.alreadyDamaged = true;
+		this.state.updateReceipt();
+	}
+	
+	this.game.camera.shake(rSpeed/15000, rSpeed*8);
 };

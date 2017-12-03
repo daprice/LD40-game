@@ -4,4 +4,9 @@ Ld40.objects.GamePackage = function(mass = 10, name = "Borker", cost = 50, alrea
 	this.name = name;
 	this.cost = cost;
 	this.alreadyPurchased = alreadyPurchased;
-}
+};
+
+Ld40.objects.GamePackage.prototype.damage = function() {
+	this.cost /= 2;
+	this.name += " (AS IS)";
+};

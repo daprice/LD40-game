@@ -8,8 +8,8 @@ Ld40.entities.Player = function(game, x = 0, y = 0) {
 	this.game.physics.p2.enable(this);
 	
 	//game properties
-	this.turnForce = 0.05;
-	this.goForce = 500;
+	this.turnForce = 20;
+	this.goForce = 800;
 	this.stopFactor = 0.97;
 	this.loadedBoxes = [];
 	this.itemizedReceipt = [];
@@ -21,7 +21,7 @@ Ld40.entities.Player = function(game, x = 0, y = 0) {
 	
 	//physics properties
 	this.body.mass = this.baseMass;
-	this.body.damping = 0.4;
+	this.body.damping = 0.3;
 	this.body.angularDamping = 0.5;
 	
 	//input
@@ -42,17 +42,20 @@ Ld40.entities.Player.prototype.update = function() {
 	this.body.angularDamping = 0.5;
 	
 	if(this.cursors.left.isDown && this.cursors.right.isUp) {
-		this.body.angularVelocity -= this.turnForce;
+		this.body.angularForce = -this.turnForce;
 	}
 	else if(this.cursors.right.isDown && this.cursors.left.isUp) {
-		this.body.angularVelocity += this.turnForce;
+		this.body.angularForce = this.turnForce;
+	}
+	else {
+		this.body.angularForce = 0;
 	}
 	
 	if(this.cursors.up.isDown) {
 		this.body.thrust(this.goForce);
 	}
 	else if(this.cursors.down.isDown) {
-		this.body.velocity.x *= this.stopFactor;
+		this.body.velocity.x *= this.stopFactor; //TODO: make this actually based on the mass of the items in the cart
 		this.body.velocity.y *= this.stopFactor;
 		this.body.angularDamping = 0.9;
 	}
@@ -87,7 +90,7 @@ Ld40.entities.Player.prototype.update = function() {
 Ld40.entities.Player.prototype.recalculatePhysicsProps = function() {
 	//update mass based on package load
 	this.body.mass = this.baseMass;
-	for (var p in this.loadedBoxes) {
+	for (var p of this.loadedBoxes) {
 		this.body.mass += p.gamePackage.mass;
 	}
 }
@@ -98,7 +101,7 @@ Ld40.entities.Player.prototype.gameLoadPackage = function(thePackage) {
 	this.addChild(theBox);
 	theBox.x = -theBox.width/2;
 	theBox.y = -theBox.height/2;
-	this.recalculatePhysicsProps;
+	this.recalculatePhysicsProps();
 	console.info('Package loaded on to player cart', thePackage);
 };
 

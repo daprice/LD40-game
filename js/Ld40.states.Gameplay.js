@@ -35,7 +35,11 @@ Ld40.states.Gameplay.prototype = {
 		
 		this.player = this.game.add.existing(new Ld40.entities.Player(this.game, 90, 90));
 		
-		this.box = this.game.add.existing(new Ld40.entities.Box(this.game, 40, 40));
+		this.boxes = [
+			this.game.add.existing(new Ld40.entities.Box(this.game, 40, 40, new Ld40.objects.GamePackage(100, 'Lövnastå', 300))),
+			this.game.add.existing(new Ld40.entities.Box(this.game, 120, 40)),
+			this.game.add.existing(new Ld40.entities.Box(this.game, 90, 200, new Ld40.objects.GamePackage(30, 'Borkborkbork', 300)))
+		];
 		
 		
 		//UI elements
@@ -85,12 +89,12 @@ Ld40.states.Gameplay.prototype = {
 		var receiptText = '';
 		for(var item of this.player.itemizedReceipt) {
 			priceTotal += item.cost;
-			receiptText += item.name + '...................$' + item.cost.toFixed(2) + '\n';
+			receiptText += item.name + '..........$' + item.cost.toFixed(2) + '\n';
 		}
 		
 		if(this.player.damageCost > 0) {
 			priceTotal += this.player.damageCost;
-			receiptText += 'DAMAGE...................$' + this.player.damageCost + '\n';
+			receiptText += 'DAMAGE..........$' + this.player.damageCost + '\n';
 		}
 		
 		this.priceTotal.setText('$' + priceTotal.toFixed(2));

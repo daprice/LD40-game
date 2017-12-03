@@ -64,6 +64,7 @@ Ld40.entities.Player.prototype.update = function() {
 	
 	if(closestBox) {
 		this.state.pickupText.setText('[SPACE] ' + closestBox.gamePackage.name + ' ($' + closestBox.gamePackage.cost + ')');
+		//TODO: make the pickupText reflect the camera position as well as the player position
 		this.state.pickupText.x = this.centerX + 30;
 		this.state.pickupText.y = this.centerY - 8;
 	}
@@ -74,6 +75,7 @@ Ld40.entities.Player.prototype.update = function() {
 	if(closestBox && this.pickupKey.isDown) {
 		this.gameLoadPackage(closestBox.gamePackage);
 		this.itemizedReceipt.push(closestBox.gamePackage);
+		this.state.showTransaction(closestBox.gamePackage.cost, closestBox.gamePackage.name);
 		closestBox.kill();
 		this.state.updateReceipt();
 	}
@@ -90,7 +92,7 @@ Ld40.entities.Player.prototype.recalculatePhysicsProps = function() {
 Ld40.entities.Player.prototype.gameLoadPackage = function(thePackage) {
 	this.gamePackages.push(thePackage);
 	this.recalculatePhysicsProps;
-	console.info('Package loaded on to player', thePackage);
+	console.info('Package loaded on to player cart', thePackage);
 };
 
 Ld40.entities.Player.prototype.onHit = function(body1, body2, shape1, shape2, contactEq) {
@@ -111,6 +113,7 @@ Ld40.entities.Player.prototype.onHit = function(body1, body2, shape1, shape2, co
 		body1.sprite.gamePackage.damage();
 		body1.sprite.alreadyDamaged = true;
 		this.state.updateReceipt();
+		this.state.showTransaction(this.damageCost, "DAMAGED MERCHANDISE", 0xff0000);
 	}
 	
 	this.game.camera.shake(rSpeed/15000, rSpeed*8);

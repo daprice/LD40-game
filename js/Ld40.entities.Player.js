@@ -17,7 +17,7 @@ Ld40.entities.Player = function(game, x = 0, y = 0) {
 	this.startBudget = 5000;
 	this.budget = this.startBudget;
 	this.baseMass = 20;
-	this.pickupDistance = 50;
+	this.pickupDistance = 70;
 	
 	//physics properties
 	this.body.mass = this.baseMass;
@@ -127,12 +127,12 @@ Ld40.entities.Player.prototype.onHit = function(body1, body2, shape1, shape2, co
 	//console.log(rSpeed);
 	
 	//discard collisions under a certain speed
-	if(rSpeed < 10) return false;
+	if(rSpeed < 20) return false;
 	
 	//TODO: play sounds depending on intensity of impact
 	
 	//randomly drop item(s) if impact is hard enough
-	if(rSpeed > 25) {
+	if(rSpeed > 40) {
 		var rand = Math.random();
 		if(rand < rSpeed/100) {
 			this.dropItem();

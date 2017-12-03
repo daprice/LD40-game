@@ -8,9 +8,9 @@ Ld40.entities.Player = function(game, x = 0, y = 0) {
 	this.game.physics.p2.enable(this);
 	
 	//game properties
-	this.turnForce = 20;
-	this.goForce = 800;
-	this.stopFactor = 0.97;
+	this.turnForce = 30;
+	this.goForce = 900;
+	this.stopFactor = 0.8;
 	this.loadedBoxes = [];
 	this.itemizedReceipt = [];
 	this.damageCost = 0;
@@ -21,7 +21,7 @@ Ld40.entities.Player = function(game, x = 0, y = 0) {
 	
 	//physics properties
 	this.body.mass = this.baseMass;
-	this.body.damping = 0.3;
+	this.body.damping = 0.2;
 	this.body.angularDamping = 0.5;
 	
 	//input
@@ -40,6 +40,7 @@ Ld40.entities.Player.prototype.update = function() {
 	
 	//reset angular damping if it was changed by using the stop button
 	this.body.angularDamping = 0.5;
+	this.body.damping = 0.2;
 	
 	if(this.cursors.left.isDown && this.cursors.right.isUp) {
 		this.body.angularForce = -this.turnForce;
@@ -55,9 +56,23 @@ Ld40.entities.Player.prototype.update = function() {
 		this.body.thrust(this.goForce);
 	}
 	else if(this.cursors.down.isDown) {
-		this.body.velocity.x *= this.stopFactor; //TODO: make this actually based on the mass of the items in the cart
-		this.body.velocity.y *= this.stopFactor;
+		this.body.damping = this.stopFactor;
 		this.body.angularDamping = 0.9;
+		
+		//apply some angular force because it always works that way in real life when you try to stop an ikea cart
+		this.speed = Math.sqrt(Math.pow(this.body.velocity.x, 2) + Math.pow(this.body.velocity.y, 2));
+		
+		if(this.speed > 4) {
+			var velAngle = Math.atan2(this.body.velocity.x, -this.body.velocity.y);
+			var diffLeft = Phaser.Math.normalizeAngle(this.body.rotation - velAngle);
+			var diffRight = Phaser.Math.normalizeAngle(velAngle - this.body.rotation);
+			if(diffLeft >= diffRight) {
+				this.body.angularForce += (this.body.mass*diffRight);
+			}
+			else if (diffRight > diffLeft) {
+				this.body.angularForce -= (this.body.mass*diffLeft);
+			}
+		}
 	}
 	
 	//check to see if any packages can be picked up

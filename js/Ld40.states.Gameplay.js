@@ -54,7 +54,7 @@ Ld40.states.Gameplay.prototype = {
 		}));
 		
 		this.itemizedList = game.add.existing(new Phaser.Text(this.game, this.game.width - 192, this.game.height - 315, "", {
-			font: "regular 9pt Verdana",
+			font: "regular 10pt Verdana",
 			fill: "#494949",
 			boundsAlignH: 'left'
 		}))
@@ -75,7 +75,7 @@ Ld40.states.Gameplay.prototype = {
 		
 		if(this.player.damageCost > 0) {
 			priceTotal += this.player.damageCost;
-			receiptText += 'DAMAGE...................$' + item.cost.toFixed(2) + '\n';
+			receiptText += 'DAMAGE...................$' + this.player.damageCost + '\n';
 		}
 		
 		this.priceTotal.setText('$' + priceTotal.toFixed(2));

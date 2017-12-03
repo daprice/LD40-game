@@ -11,7 +11,7 @@ Ld40.entities.Player = function(game, x = 0, y = 0) {
 	this.turnForce = 0.05;
 	this.goForce = 500;
 	this.stopFactor = 0.97;
-	this.gamePackages = [];
+	this.loadedBoxes = [];
 	this.itemizedReceipt = [];
 	this.damageCost = 0;
 	this.startBudget = 5000;
@@ -74,8 +74,11 @@ Ld40.entities.Player.prototype.update = function() {
 	
 	if(closestBox && this.pickupKey.isDown) {
 		this.gameLoadPackage(closestBox.gamePackage);
-		this.itemizedReceipt.push(closestBox.gamePackage);
-		this.state.showTransaction(closestBox.gamePackage.cost, closestBox.gamePackage.name);
+		if(!closestBox.gamePackage.alreadyPurchased) { //(don't make a new transaction for already purchased packages that have fallen off the cart)
+			this.itemizedReceipt.push(closestBox.gamePackage);
+			this.state.showTransaction(closestBox.gamePackage.cost, closestBox.gamePackage.name);
+		}
+		closestBox.gamePackage.alreadyPurchased = true;
 		closestBox.kill();
 		this.state.updateReceipt();
 	}
@@ -84,13 +87,17 @@ Ld40.entities.Player.prototype.update = function() {
 Ld40.entities.Player.prototype.recalculatePhysicsProps = function() {
 	//update mass based on package load
 	this.body.mass = this.baseMass;
-	for (var p in this.gamePackages) {
-		this.body.mass += p.mass;
+	for (var p in this.loadedBoxes) {
+		this.body.mass += p.gamePackage.mass;
 	}
 }
 
 Ld40.entities.Player.prototype.gameLoadPackage = function(thePackage) {
-	this.gamePackages.push(thePackage);
+	var theBox = new Ld40.entities.Box(this.game, 0, 0, thePackage, false)
+	this.loadedBoxes.push(theBox);
+	this.addChild(theBox);
+	theBox.x = -theBox.width/2;
+	theBox.y = -theBox.height/2;
 	this.recalculatePhysicsProps;
 	console.info('Package loaded on to player cart', thePackage);
 };

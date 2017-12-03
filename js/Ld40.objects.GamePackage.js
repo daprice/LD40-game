@@ -1,8 +1,9 @@
 //represents a flat-packed piece of furniture
-Ld40.objects.GamePackage = function(mass = 10, name = "Borker", cost = 50, alreadyPurchased = false) {
+Ld40.objects.GamePackage = function(mass = 10, name = "Borker", cost = 50, image = "box", alreadyPurchased = false) {
 	this.mass = mass;
 	this.name = name;
 	this.cost = cost;
+	this.image = image;
 	this.alreadyPurchased = alreadyPurchased;
 };
 

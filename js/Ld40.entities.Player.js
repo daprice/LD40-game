@@ -12,6 +12,9 @@ Ld40.entities.Player = function(game, x = 0, y = 0) {
 	this.goForce = 500;
 	this.stopFactor = 0.97;
 	this.gamePackages = [];
+	this.itemizedReceipt = [];
+	this.startBudget = 5000;
+	this.budget = this.startBudget;
 	this.baseMass = 20;
 	this.pickupDistance = 50;
 	
@@ -51,13 +54,24 @@ Ld40.entities.Player.prototype.update = function() {
 	}
 	
 	//check to see if any packages can be picked up
-	closestBox = this.game.world.getClosestTo(this, function(obj, dist) {
+	var closestBox = this.game.world.getClosestTo(this, function(obj, dist) {
 		return obj.gamePackage && dist < this.pickupDistance;
 	}, this);
 	
+	if(closestBox) {
+		this.state.pickupText.setText('[SPACE] ' + closestBox.gamePackage.name + ' ($' + closestBox.gamePackage.cost + ')');
+		this.state.pickupText.x = this.centerX + 30;
+		this.state.pickupText.y = this.centerY - 8;
+	}
+	else {
+		this.state.pickupText.setText('');
+	}
+	
 	if(closestBox && this.pickupKey.isDown) {
 		this.gameLoadPackage(closestBox.gamePackage);
+		this.itemizedReceipt.push(closestBox.gamePackage);
 		closestBox.kill();
+		this.state.updateReceipt();
 	}
 };
 

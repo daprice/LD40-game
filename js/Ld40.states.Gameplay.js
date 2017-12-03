@@ -38,8 +38,42 @@ Ld40.states.Gameplay.prototype = {
 		this.box = game.add.existing(new Ld40.entities.Box(this.game, 40, 40));
 		
 		
+		//UI elements
+		this.pickupText = game.add.existing(new Phaser.Text(this.game, 0, 0, '', {
+			font: "bold 8pt Verdana",
+			fill: 'white',
+			boundsAlignH: 'center'
+		}));
+		
+		this.receiptBackground = game.add.existing(new Phaser.Image(this.game, this.game.width - 214, this.game.height - 387, 'receipt'));
+		
+		this.priceTotal = game.add.existing(new Phaser.Text(this.game, this.game.width - 80, this.game.height - 62, '$0.00', {
+			font: "bold 8pt Verdana",
+			fill: "#494949",
+			boundsAlignH: 'right'
+		}));
+		
+		this.itemizedList = game.add.existing(new Phaser.Text(this.game, this.game.width - 192, this.game.height - 315, "", {
+			font: "regular 9pt Verdana",
+			fill: "#494949",
+			boundsAlignH: 'left'
+		}))
+		
+		
 		//camera
 		this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_TOPDOWN, 0.1, 0.1);
 		this.game.camera.roundPx = false;
+	},
+	
+	updateReceipt: function() {
+		var priceTotal = 0;
+		var receiptText = '';
+		for(var item of this.player.itemizedReceipt) {
+			priceTotal += item.cost;
+			receiptText += item.name + '...................$' + item.cost.toFixed(2);
+		}
+		
+		this.priceTotal.setText('$' + priceTotal.toFixed(2));
+		this.itemizedList.setText(receiptText);
 	}
 }

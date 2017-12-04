@@ -8,16 +8,19 @@ Ld40.entities.Player = function(game, x = 0, y = 0) {
 	this.game.physics.p2.enable(this);
 	
 	//game properties
-	this.turnForce = 50;
+	this.turnForce = 70;
 	this.goForce = 1000;
 	this.stopFactor = 0.8;
 	this.loadedBoxes = [];
 	this.itemizedReceipt = [];
 	this.damageCost = 0;
 	this.startBudget = 5000;
+	this.hunger = 0;
+	this.maxHunger = 100;
 	this.budget = this.startBudget;
 	this.baseMass = 20;
 	this.pickupDistance = 70;
+	this.pickupCooldown = 1000;
 	
 	//physics properties
 	this.body.mass = this.baseMass;
@@ -39,6 +42,13 @@ Ld40.entities.Player.prototype.constructor = Ld40.entities.Player;
 
 Ld40.entities.Player.prototype.update = function() {
 	Phaser.Sprite.prototype.update.call(this);
+	
+	this.pickupCooldown += 1;
+	this.hunger += 0.002;
+	if(this.hunger >= this.maxHunger) {
+		//TODO: actual fail state
+		console.error("Player died of hunger");
+	}
 	
 	//reset angular damping if it was changed by using the stop button
 	this.body.angularDamping = 0.5;
@@ -82,7 +92,7 @@ Ld40.entities.Player.prototype.update = function() {
 		return obj.gamePackage && dist < this.pickupDistance;
 	}, this);
 	
-	if(closestBox) {
+	if(closestBox && this.pickupCooldown > 1000) {
 		this.state.pickupText.setText('[SPACE] ' + closestBox.gamePackage.name + ' ($' + closestBox.gamePackage.cost + ')');
 		//TODO: make the pickupText reflect the camera position as well as the player position
 		this.state.pickupText.x = this.centerX + 30;
@@ -92,15 +102,21 @@ Ld40.entities.Player.prototype.update = function() {
 		this.state.pickupText.setText('');
 	}
 	
-	if(closestBox && this.pickupKey.isDown) {
-		this.gameLoadPackage(closestBox.gamePackage);
+	if(closestBox && this.pickupCooldown > 1000 && this.pickupKey.isDown) {
 		if(!closestBox.gamePackage.alreadyPurchased) { //(don't make a new transaction for already purchased packages that have fallen off the cart)
 			this.itemizedReceipt.push(closestBox.gamePackage);
 			this.state.showTransaction(closestBox.gamePackage.cost, closestBox.gamePackage.name);
 		}
-		closestBox.gamePackage.alreadyPurchased = true;
-		closestBox.kill();
+		if(closestBox.gamePackage.name == "Meatballs") {
+			this.hunger = 0;
+		}
+		else {
+			this.gameLoadPackage(closestBox.gamePackage);
+			closestBox.gamePackage.alreadyPurchased = true;
+			closestBox.kill();
+		}
 		this.state.updateReceipt();
+		this.pickupCooldown = 0;
 	}
 };
 

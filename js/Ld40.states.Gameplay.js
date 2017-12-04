@@ -39,25 +39,38 @@ Ld40.states.Gameplay.prototype = {
 		
 		
 		//UI elements
+		this.instructions = this.game.add.existing(new Phaser.Text(this.game, 10, this.game.height - 16,
+			"[LEFT,RIGHT] Steer, [UP] Push, [DOWN] Attempt to stop, [SPACE] Pick up",
+			{
+				font: "bold 10pt Verdana",
+				fill: 'white'
+			}
+		));
+		this.instructions.fixedToCamera = true;
+		
 		this.pickupText = this.game.add.existing(new Phaser.Text(this.game, 0, 0, '', {
 			font: "bold 8pt Verdana",
 			fill: 'white',
 			boundsAlignH: 'center'
 		}));
+		this.pickupText.fixedToCamera = true;
 		
 		this.receiptBackground = this.game.add.existing(new Phaser.Image(this.game, this.game.width - 214, this.game.height - 387, 'receipt'));
+		this.receiptBackground.fixedToCamera = true;
 		
 		this.priceTotal = this.game.add.existing(new Phaser.Text(this.game, this.game.width - 80, this.game.height - 62, '$0.00', {
 			font: "bold 8pt Verdana",
 			fill: "#494949",
 			boundsAlignH: 'right'
 		}));
+		this.priceTotal.fixedToCamera = true;
 		
 		this.itemizedList = this.game.add.existing(new Phaser.Text(this.game, this.game.width - 192, this.game.height - 315, "", {
 			font: "regular 10pt Verdana",
 			fill: "#494949",
 			boundsAlignH: 'left'
 		}));
+		this.itemizedList.fixedToCamera = true;
 		
 		this.transactionTexts = [];
 		
@@ -145,5 +158,7 @@ Ld40.states.Gameplay.prototype = {
 		setTable(110, 1366);
 		setTable(170, 1371);
 		setTable(232, 1370);
+		
+		this.game.add.existing(new Ld40.entities.ServingTable(this.game, 130,1110));
 	}
 }

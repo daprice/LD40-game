@@ -8,8 +8,8 @@ Ld40.entities.Player = function(game, x = 0, y = 0) {
 	this.game.physics.p2.enable(this);
 	
 	//game properties
-	this.turnForce = 30;
-	this.goForce = 900;
+	this.turnForce = 50;
+	this.goForce = 1000;
 	this.stopFactor = 0.8;
 	this.loadedBoxes = [];
 	this.itemizedReceipt = [];
@@ -147,6 +147,7 @@ Ld40.entities.Player.prototype.onHit = function(body1, body2, shape1, shape2, co
 	//TODO: play sounds depending on intensity of impact
 	
 	//randomly drop item(s) if impact is hard enough
+	//TODO: instead of making it random, just randomly jostle the items proportionally to the impact and have the ones that go over the edge of the cart fall off
 	if(rSpeed > 40) {
 		var rand = Math.random();
 		if(rand < rSpeed/100) {

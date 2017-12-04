@@ -22,8 +22,10 @@ Ld40.states.Gameplay.prototype = {
 		this.map.addTilesetImage('tilemap', 'tilemap');
 		this.layer = this.map.createLayer('ground');
 		this.layer1 = this.map.createLayer('landscape');
+		this.layer2 = this.map.createLayer('decoration');
 		this.layer.resizeWorld();
 		this.layer1.resizeWorld();
+		this.layer2.resizeWorld();
 		
 		this.map.collisionLayer = this.layer1;
 		this.map.setCollisionByExclusion([1], true, this.layer1);

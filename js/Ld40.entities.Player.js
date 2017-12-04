@@ -92,7 +92,7 @@ Ld40.entities.Player.prototype.update = function() {
 		return obj.gamePackage && dist < this.pickupDistance;
 	}, this);
 	
-	if(closestBox && this.pickupCooldown > 1000) {
+	if(closestBox && this.pickupCooldown > 100) {
 		this.state.pickupText.setText('[SPACE] ' + closestBox.gamePackage.name + ' ($' + closestBox.gamePackage.cost + ')');
 		//TODO: make the pickupText reflect the camera position as well as the player position
 		this.state.pickupText.x = this.centerX + 30;
@@ -102,7 +102,7 @@ Ld40.entities.Player.prototype.update = function() {
 		this.state.pickupText.setText('');
 	}
 	
-	if(closestBox && this.pickupCooldown > 1000 && this.pickupKey.isDown) {
+	if(closestBox && this.pickupCooldown > 100 && this.pickupKey.isDown) {
 		if(!closestBox.gamePackage.alreadyPurchased) { //(don't make a new transaction for already purchased packages that have fallen off the cart)
 			this.itemizedReceipt.push(closestBox.gamePackage);
 			this.state.showTransaction(closestBox.gamePackage.cost, closestBox.gamePackage.name);

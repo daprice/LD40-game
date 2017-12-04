@@ -53,7 +53,6 @@ Ld40.states.Gameplay.prototype = {
 			fill: 'white',
 			boundsAlignH: 'center'
 		}));
-		this.pickupText.fixedToCamera = true;
 		
 		this.receiptBackground = this.game.add.existing(new Phaser.Image(this.game, this.game.width - 214, this.game.height - 387, 'receipt'));
 		this.receiptBackground.fixedToCamera = true;
@@ -73,6 +72,12 @@ Ld40.states.Gameplay.prototype = {
 		this.itemizedList.fixedToCamera = true;
 		
 		this.transactionTexts = [];
+		
+		this.hungerText = this.game.add.existing(new Phaser.Text(this.game, 10, 2, "Hunger: 0%", {
+			font: "bold 10pt Verdana",
+			fill: 'white'
+		}));
+		this.hungerText.fixedToCamera = true;
 		
 		
 		//camera
@@ -94,6 +99,9 @@ Ld40.states.Gameplay.prototype = {
 				t--;
 			}
 		}
+		
+		//update hunger UI
+		this.hungerText.setText("Hunger: " + ((this.player.hunger / this.player.maxHunger)*100).toFixed(0) + "%");
 	},
 	
 	updateReceipt: function() {

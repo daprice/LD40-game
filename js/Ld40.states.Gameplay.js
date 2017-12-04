@@ -35,13 +35,7 @@ Ld40.states.Gameplay.prototype = {
 		
 		//entities
 		
-		this.player = this.game.add.existing(new Ld40.entities.Player(this.game, 90, 90));
-		
-		this.boxes = [
-			this.game.add.existing(new Ld40.entities.Box(this.game, 40, 40, new Ld40.objects.GamePackage(80, 'Lövnastå', 300))),
-			this.game.add.existing(new Ld40.entities.Box(this.game, 120, 40)),
-			this.game.add.existing(new Ld40.entities.Box(this.game, 90, 200, new Ld40.objects.GamePackage(30, 'Borkborkbork', 300)))
-		];
+		this.player = this.game.add.existing(new Ld40.entities.Player(this.game, 90, 60));
 		
 		
 		//UI elements
@@ -71,6 +65,9 @@ Ld40.states.Gameplay.prototype = {
 		//camera
 		this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_TOPDOWN, 0.1, 0.1);
 		this.game.camera.roundPx = false;
+		
+		
+		this.setupLevel();
 	},
 	
 	update: function() {
@@ -128,5 +125,25 @@ Ld40.states.Gameplay.prototype = {
 	
 	addDroppedItem: function(theItem) {
 		this.game.add.existing(theItem);
+	},
+	
+	//huge ugly function that puts all the furniture and boxes in their place
+	setupLevel: function() {
+		//place tables and chairs in restaurant
+		var setTable = function(x, y) {
+			var rand = [Math.random(), Math.random(), Math.random()];
+			this.game.add.existing(new Ld40.entities.Table(this.game, x, y)).body.angle = rand[0]*2-1;
+			this.game.add.existing(new Ld40.entities.Chair(this.game, x, y+30)).body.angle = 180 + (rand[1]*10-5);
+			this.game.add.existing(new Ld40.entities.Chair(this.game, x, y-26)).body.angle = rand[2]*10-5;
+		};
+		
+		setTable(50, 1270);
+		setTable(110, 1266);
+		setTable(170, 1271);
+		setTable(232, 1270);
+		setTable(50, 1370);
+		setTable(110, 1366);
+		setTable(170, 1371);
+		setTable(232, 1370);
 	}
 }

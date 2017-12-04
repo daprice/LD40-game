@@ -24,6 +24,8 @@ Ld40.entities.Player = function(game, x = 0, y = 0) {
 	this.body.damping = 0.2;
 	this.body.angularDamping = 0.5;
 	
+	this.body.angle = 90;
+	
 	//input
 	this.cursors = this.game.input.keyboard.createCursorKeys();
 	this.pickupKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);

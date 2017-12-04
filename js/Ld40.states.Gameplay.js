@@ -102,6 +102,12 @@ Ld40.states.Gameplay.prototype = {
 		
 		//update hunger UI
 		this.hungerText.setText("Hunger: " + ((this.player.hunger / this.player.maxHunger)*100).toFixed(0) + "%");
+		if(this.player.hunger / this.player.maxHunger > 0.9) {
+			this.hungerText.fill = "red";
+		}
+		else {
+			this.hungerText.fill = "white";
+		}
 	},
 	
 	updateReceipt: function() {

@@ -1,9 +1,7 @@
 var Ld40 = {
 	phaserConfig: {
-		width: '100%',
-		height: '100%',
 		parent: 'game',
-		renderer: Phaser.AUTO
+		renderer: Phaser.CANVAS
 	},
 	
 	states: {},

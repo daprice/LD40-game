@@ -93,8 +93,13 @@ Ld40.entities.Player.prototype.update = function() {
 	}, this);
 	
 	if(closestBox && this.pickupCooldown > 100) {
-		this.state.pickupText.setText('[SPACE] ' + closestBox.gamePackage.name + ' ($' + closestBox.gamePackage.cost + ')');
-		//TODO: make the pickupText reflect the camera position as well as the player position
+		if(!closestBox.gamePackage.name == "Check out") {
+			this.state.pickupText.setText('[SPACE] ' + closestBox.gamePackage.name + ' ($' + closestBox.gamePackage.cost + ')');
+		}
+		else {
+			this.state.pickupText.setText('[SPACE] Check out');
+		}
+		
 		this.state.pickupText.x = this.centerX + 30;
 		this.state.pickupText.y = this.centerY - 8;
 	}
@@ -109,6 +114,10 @@ Ld40.entities.Player.prototype.update = function() {
 		}
 		if(closestBox.gamePackage.name == "Meatballs") {
 			this.hunger = 0;
+		}
+		else if(closestBox.gamePackage.name == "Check out") {
+			//TODO: actual win state
+			console.error('Player checked out but there is no way to show their victory condition');
 		}
 		else {
 			this.gameLoadPackage(closestBox.gamePackage);

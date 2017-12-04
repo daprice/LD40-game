@@ -18,6 +18,7 @@ Ld40.states.Gameplay.prototype = {
 		}
 		
 		//tilemap
+		//TODO: see if I can display this as an image instead of a Tilemap to improve performance
 		this.map = this.game.add.tilemap('map');
 		this.map.addTilesetImage('tilemap', 'tilemap');
 		this.layer = this.map.createLayer('ground');
@@ -164,6 +165,10 @@ Ld40.states.Gameplay.prototype = {
 			this.game.add.existing(new Ld40.entities.Chair(this.game, x, y-26)).body.angle = rand[2]*10-5;
 		};
 		
+		var placeBox = function(type, x, y) {
+			this.game.add.existing(new Ld40.entities.Box(this.game, x, y, type));
+		};
+		
 		setTable(50, 1270);
 		setTable(110, 1266);
 		setTable(170, 1271);
@@ -174,5 +179,7 @@ Ld40.states.Gameplay.prototype = {
 		setTable(232, 1370);
 		
 		this.game.add.existing(new Ld40.entities.ServingTable(this.game, 130,1110));
+		
+		this.game.add.existing(new Ld40.entities.Checkout(this.game, 1300,150));
 	}
 }

@@ -124,7 +124,7 @@ Ld40.entities.Player.prototype.update = function() {
 			this.hunger = 0;
 		}
 		else if(closestBox.gamePackage.name == "Check out") {
-			var priceTotal = 0;
+			var priceTotal = 0.000001;  //stupidly low number so it doesn't divide by zero if the player hasn't paid for anything
 			for(var item of this.itemizedReceipt) {
 				priceTotal += item.cost;
 			}

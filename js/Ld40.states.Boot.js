@@ -1,7 +1,9 @@
 var Ld40 = {
 	phaserConfig: {
 		parent: 'game',
-		renderer: Phaser.CANVAS
+		width: '100%',
+		height: '100%',
+		renderer: Phaser.AUTO
 	},
 	
 	states: {},
@@ -17,6 +19,9 @@ Ld40.states.Boot.prototype = {
 	},
 	
 	preload: function() {
+		this.load.image('ground', 'img/ground.png');
+		this.load.image('landscape', 'img/landscape.png');
+		this.load.image('decoration', 'img/decoration.png');
 		this.load.image('player', 'img/player.png');
 		this.load.image('box', 'img/box.png');
 		this.load.image('table', 'img/table.png');

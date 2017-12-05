@@ -19,14 +19,19 @@ Ld40.states.Gameplay.prototype = {
 		
 		//tilemap
 		//TODO: see if I can display this as an image instead of a Tilemap to improve performance
+		this.game.add.existing(new Phaser.Image(this.game, 0, 0, 'ground'));
+		this.game.add.existing(new Phaser.Image(this.game, 0, 0, 'landscape'));
+		this.game.add.existing(new Phaser.Image(this.game, 0, 0, 'decoration'));
+		
 		this.map = this.game.add.tilemap('map');
 		this.map.addTilesetImage('tilemap', 'tilemap');
-		this.layer = this.map.createLayer('ground');
+		//this.layer = this.map.createLayer('ground');
 		this.layer1 = this.map.createLayer('landscape');
-		this.layer2 = this.map.createLayer('decoration');
-		this.layer.resizeWorld();
+		//this.layer2 = this.map.createLayer('decoration');
+		//this.layer.resizeWorld();
 		this.layer1.resizeWorld();
-		this.layer2.resizeWorld();
+		this.layer1.visible = false;
+		//this.layer2.resizeWorld();
 		
 		this.map.collisionLayer = this.layer1;
 		this.map.setCollisionByExclusion([1], true, this.layer1);

@@ -8,8 +8,8 @@ Ld40.entities.Player = function(game, x = 0, y = 0) {
 	this.game.physics.p2.enable(this);
 	
 	//game properties
-	this.turnForce = 70;
-	this.goForce = 1000;
+	this.turnForce = 90;
+	this.goForce = 1200;
 	this.stopFactor = 0.8;
 	this.loadedBoxes = [];
 	this.itemizedReceipt = [];
@@ -19,8 +19,9 @@ Ld40.entities.Player = function(game, x = 0, y = 0) {
 	this.maxHunger = 100;
 	this.budget = this.startBudget;
 	this.baseMass = 20;
-	this.pickupDistance = 70;
+	this.pickupDistance = 80;
 	this.pickupCooldown = 1000;
+	this.debug = true;
 	
 	//physics properties
 	this.body.mass = this.baseMass;
@@ -56,9 +57,11 @@ Ld40.entities.Player.prototype.update = function() {
 	
 	if(this.cursors.left.isDown && this.cursors.right.isUp) {
 		this.body.angularForce = -this.turnForce;
+		if(this.debug) {this.state.camera.x -= 5;}
 	}
 	else if(this.cursors.right.isDown && this.cursors.left.isUp) {
 		this.body.angularForce = this.turnForce;
+		if(this.debug) {this.state.camera.x += 5;}
 	}
 	else {
 		this.body.angularForce = 0;
@@ -66,8 +69,10 @@ Ld40.entities.Player.prototype.update = function() {
 	
 	if(this.cursors.up.isDown) {
 		this.body.thrust(this.goForce);
+		if(this.debug) {this.state.camera.y -= 5;}
 	}
 	else if(this.cursors.down.isDown) {
+		if(this.debug) {this.state.camera.y += 5;}
 		this.body.damping = this.stopFactor;
 		this.body.angularDamping = 0.9;
 		
@@ -93,7 +98,7 @@ Ld40.entities.Player.prototype.update = function() {
 	}, this);
 	
 	if(closestBox && this.pickupCooldown > 100) {
-		if(!closestBox.gamePackage.name == "Check out") {
+		if(closestBox.gamePackage.name != "Check out") {
 			this.state.pickupText.setText('[SPACE] ' + closestBox.gamePackage.name + ' ($' + closestBox.gamePackage.cost + ')');
 		}
 		else {

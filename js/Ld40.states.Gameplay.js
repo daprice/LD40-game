@@ -38,6 +38,8 @@ Ld40.states.Gameplay.prototype = {
 		
 		this.player = this.game.add.existing(new Ld40.entities.Player(this.game, 90, 60));
 		
+		this.setupLevel();
+		
 		
 		//UI elements
 		this.instructions = this.game.add.existing(new Phaser.Text(this.game, 10, this.game.height - 16,
@@ -82,11 +84,9 @@ Ld40.states.Gameplay.prototype = {
 		
 		
 		//camera
-		this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_TOPDOWN, 0.1, 0.1);
+		if(!this.player.debug)
+			this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_TOPDOWN, 0.1, 0.1);
 		this.game.camera.roundPx = false;
-		
-		
-		this.setupLevel();
 	},
 	
 	update: function() {
@@ -166,7 +166,40 @@ Ld40.states.Gameplay.prototype = {
 		};
 		
 		var placeBox = function(type, x, y) {
-			this.game.add.existing(new Ld40.entities.Box(this.game, x, y, type));
+			var thePackage;
+			switch(type) {
+				case "snorg":
+					thePackage = new Ld40.objects.GamePackage(70, "Snörg", 299, "snorg");
+					break;
+				case "borgle":
+					thePackage = new Ld40.objects.GamePackage(10, "Borgle", 45, "borgle");
+					break;
+				case "lurt":
+					thePackage = new Ld40.objects.GamePackage(5, "Lürt", 32, "lurt");
+					break;
+				case "lava":
+					thePackage = new Ld40.objects.GamePackage(7, "Låva", 20, "lava");
+					break;
+				case "pulf":
+					thePackage = new Ld40.objects.GamePackage(10, "Pulf", 29, "pulf");
+					break;
+				case "fleeb":
+					thePackage = new Ld40.objects.GamePackage(20, "Flëeb", 89, "fleeb");
+					break;
+				case "borger":
+					thePackage = new Ld40.objects.GamePackage(40, "Borger", 169, "borger");
+					break;
+				case "blarg":
+					thePackage = new Ld40.objects.GamePackage(30, "Blarg", 59, "blarg");
+					break;
+				case "bork":
+					thePackage = new Ld40.objects.GamePackage(8, "Bork", 61, "bork");
+					break;
+				default:
+					console.warn("Generic pacakge placed at ", x, y);
+					thePackage = new Ld40.objects.GamePackage();
+			}
+			this.game.add.existing(new Ld40.entities.Box(this.game, x, y, thePackage));
 		};
 		
 		setTable(50, 1270);
@@ -181,5 +214,81 @@ Ld40.states.Gameplay.prototype = {
 		this.game.add.existing(new Ld40.entities.ServingTable(this.game, 130,1110));
 		
 		this.game.add.existing(new Ld40.entities.Checkout(this.game, 1300,150));
+		
+		//decor area 1
+		placeBox("lurt", 270, 380);
+		placeBox("lurt", 290, 380);
+		placeBox('lurt', 310, 380);
+		placeBox('lurt', 332, 381);
+		placeBox('lava', 355, 380);
+		
+		//dining
+		placeBox('borger', 50, 730);
+		placeBox('borger', 50, 790);
+		placeBox('borger', 100, 750);
+		placeBox('borgle', 80, 745);
+		placeBox('borgle', 80, 780);
+		placeBox('borger', 130, 730);
+		placeBox('borger', 130, 790);
+		placeBox('borger', 180, 750);
+		placeBox('borgle', 160, 745);
+		placeBox('borgle', 160, 780);
+		placeBox('borger', 370, 730);
+		placeBox('borger', 370, 790);
+		placeBox('borger', 420, 750);
+		placeBox('borgle', 430, 745);
+		placeBox('borgle', 430, 780);
+		placeBox('bork', 550, 640);
+		placeBox('bork', 550, 680);
+		placeBox('bork', 540, 710);
+		
+		//storage 1
+		placeBox('fleeb', 320, 50);
+		placeBox('pulf', 390, 53);
+		placeBox('pulf', 392, 75);
+		placeBox('fleeb', 990, 60);
+		
+		//living
+		placeBox('lurt', 830, 530);
+		placeBox('lurt', 830, 670);
+		placeBox('blarg', 880, 540);
+		placeBox('blarg', 870, 620);
+		placeBox('pulf', 880, 760);
+		placeBox('pulf', 890, 820);
+		
+		//bedroom
+		placeBox('snorg', 580, 990);
+		placeBox('snorg', 530, 1000);
+		placeBox('snorg', 450, 950);
+		placeBox('snorg', 390, 950);
+		placeBox('snorg', 400, 990);
+		placeBox('snorg', 490, 990);
+		
+		//decor area 2
+		placeBox('lava', 560, 1260);
+		placeBox('lava', 560, 1230);
+		placeBox('lava', 560, 1190);
+		placeBox('lurt', 560, 1150);
+		placeBox('lurt', 590, 1150);
+		placeBox('lurt', 630, 1150);
+		placeBox('lava', 670, 1140);
+		placeBox('lava', 670, 1170);
+		placeBox('lava', 710, 1130);
+		placeBox('lava', 710, 1170);
+		
+		//storage 2
+		placeBox('snorg', 870, 970);
+		placeBox('fleeb', 910, 970);
+		placeBox('borgle', 860, 1380);
+		placeBox('pulf', 890, 1330);
+		placeBox('blarg', 1030, 1020);
+		placeBox('fleeb', 1110, 1080);
+		placeBox('blarg', 1310, 1140);
+		placeBox('lava', 1110, 900);
+		placeBox('borgle', 1310, 920);
+		placeBox('borgle', 1310, 880);
+		placeBox('borger', 1020, 780);
+		placeBox('borger', 1090, 770);
+		placeBox('snorg', 1120, 540);
 	}
 }

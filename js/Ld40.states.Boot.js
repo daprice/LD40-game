@@ -7,7 +7,7 @@ var Ld40 = {
 	states: {},
 	entities: {},
 	objects: {}
-}
+};
 
 Ld40.states.Boot = function() {};
 
@@ -35,6 +35,8 @@ Ld40.states.Boot.prototype = {
 		this.load.image('bork', 'img/bork.png');
 		this.load.tilemap('map', 'data/map.json', null, Phaser.Tilemap.TILED_JSON);
 		this.load.image('tilemap', 'img/tilemap.png');
+		
+		this.load.audio('background', 'audio/background.mp3');
 	},
 	
 	create: function() {
@@ -42,8 +44,13 @@ Ld40.states.Boot.prototype = {
 	},
 	
 	update: function() {
-		//if(this.cache.isSoundDecoded('someSound') {
+		if(this.allSoundsDecoded()) {
 			this.state.start('Ld40.states.Gameplay');
-		//}
+		}
+	},
+	
+	allSoundsDecoded: function() {
+		//if(this.cache.isSoundDecoded('someSound') {
+		return true;
 	}
 };

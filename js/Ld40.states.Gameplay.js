@@ -87,6 +87,10 @@ Ld40.states.Gameplay.prototype = {
 		if(!this.player.debug)
 			this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_TOPDOWN, 0.1, 0.1);
 		this.game.camera.roundPx = false;
+		
+		//audio
+		this.bg = this.game.add.audio('background');
+		this.bg.play('', 0, 0.1, true);
 	},
 	
 	update: function() {
@@ -149,6 +153,13 @@ Ld40.states.Gameplay.prototype = {
 		});
 		
 		
+	},
+	
+	endGame: function(win = false, message = "Game over") {
+		this.game.paused = true;
+		this.bg.stop();
+		
+		alert(message);
 	},
 	
 	addDroppedItem: function(theItem) {

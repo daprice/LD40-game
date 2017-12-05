@@ -10,7 +10,6 @@ Ld40.entities.Box = function(game, x = 0, y = 0, gamePackage, loose = true) {
 	if(loose) {
 		this.setupPhysics();
 	}
-	
 };
 
 Ld40.entities.Box.prototype = Object.create(Phaser.Sprite.prototype);

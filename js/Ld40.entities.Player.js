@@ -8,8 +8,8 @@ Ld40.entities.Player = function(game, x = 0, y = 0) {
 	this.game.physics.p2.enable(this);
 	
 	//game properties
-	this.turnForce = 90;
-	this.goForce = 1200;
+	this.turnForce = 130;
+	this.goForce = 1800;
 	this.stopFactor = 0.8;
 	this.loadedBoxes = [];
 	this.itemizedReceipt = [];
@@ -21,7 +21,6 @@ Ld40.entities.Player = function(game, x = 0, y = 0) {
 	this.baseMass = 20;
 	this.pickupDistance = 80;
 	this.pickupCooldown = 1000;
-	this.debug = true;
 	
 	//physics properties
 	this.body.mass = this.baseMass;
@@ -29,6 +28,11 @@ Ld40.entities.Player = function(game, x = 0, y = 0) {
 	this.body.angularDamping = 0.5;
 	
 	this.body.angle = 90;
+	
+	//audio
+	this.hitSound = this.game.add.audio('carthit');
+	this.boxHitSound = this.game.add.sound('boxhit');
+	this.boxDropSound = this.game.add.sound('boxdrop');
 	
 	//input
 	this.cursors = this.game.input.keyboard.createCursorKeys();
@@ -45,10 +49,9 @@ Ld40.entities.Player.prototype.update = function() {
 	Phaser.Sprite.prototype.update.call(this);
 	
 	this.pickupCooldown += 1;
-	this.hunger += 0.002;
+	this.hunger += 0.008;
 	if(this.hunger >= this.maxHunger) {
-		//TODO: actual fail state
-		console.error("Player died of hunger");
+		this.state.endGame(false, "You have died of starvation in a store that has its own restaurant. Congratulations.");
 	}
 	
 	//reset angular damping if it was changed by using the stop button
@@ -113,7 +116,7 @@ Ld40.entities.Player.prototype.update = function() {
 	}
 	
 	if(closestBox && this.pickupCooldown > 100 && this.pickupKey.isDown) {
-		if(!closestBox.gamePackage.alreadyPurchased) { //(don't make a new transaction for already purchased packages that have fallen off the cart)
+		if(!closestBox.gamePackage.alreadyPurchased && closestBox.gamePackage.name != "Check out") { //(don't make a new transaction for already purchased packages that have fallen off the cart)
 			this.itemizedReceipt.push(closestBox.gamePackage);
 			this.state.showTransaction(closestBox.gamePackage.cost, closestBox.gamePackage.name);
 		}
@@ -121,8 +124,20 @@ Ld40.entities.Player.prototype.update = function() {
 			this.hunger = 0;
 		}
 		else if(closestBox.gamePackage.name == "Check out") {
-			//TODO: actual win state
-			console.error('Player checked out but there is no way to show their victory condition');
+			var priceTotal = 0;
+			for(var item of this.itemizedReceipt) {
+				priceTotal += item.cost;
+			}
+			if(this.damageCost > 0) {
+				priceTotal += this.damageCost;
+			}
+			
+			var valueTotal = 0;
+			for(var item of this.loadedBoxes) {
+				valueTotal += item.gamePackage.cost;
+			}
+			
+			this.state.endGame(true, "You survived a trip to FLÅTPAK! You brought home $" + valueTotal.toFixed(2) + " worth of furniture at a cost of $" + priceTotal.toFixed(2) + " (including $" + this.damageCost.toFixed(2) + " worth of damage to store property). That makes your efficiency score " + (valueTotal/priceTotal*100).toFixed(0) + " out of 100.");
 		}
 		else {
 			this.gameLoadPackage(closestBox.gamePackage);
@@ -164,6 +179,8 @@ Ld40.entities.Player.prototype.dropItem = function() {
 	this.loadedBoxes.splice(rand, 1);
 	
 	this.state.addDroppedItem(new Ld40.entities.Box(this.game, this.x, this.y, thePackage));
+	this.boxDropSound.play('', 0, 1, false, true);
+	this.recalculatePhysicsProps();
 };
 
 Ld40.entities.Player.prototype.onHit = function(body1, body2, shape1, shape2, contactEq) {
@@ -174,9 +191,10 @@ Ld40.entities.Player.prototype.onHit = function(body1, body2, shape1, shape2, co
 	//console.log(rSpeed);
 	
 	//discard collisions under a certain speed
-	if(rSpeed < 20) return false;
+	if(rSpeed < 18) return false;
 	
-	//TODO: play sounds depending on intensity of impact
+	//play sounds depending on intensity of impact
+	this.hitSound.play('', 0, rSpeed/100, false, true);
 	
 	//randomly drop item(s) if impact is hard enough
 	//TODO: instead of making it random, just randomly jostle the items proportionally to the impact and have the ones that go over the edge of the cart fall off
@@ -189,6 +207,7 @@ Ld40.entities.Player.prototype.onHit = function(body1, body2, shape1, shape2, co
 	
 	//calculate and apply damage cost if the item hasn't already been paid for
 	if(body1.sprite && body1.sprite.gamePackage && !body1.sprite.gamePackage.alreadyPurchased && !body1.sprite.alreadyDamaged) {
+		this.boxHitSound.play('', 0, rSpeed/20, false, true);
 		this.damageCost += body1.sprite.gamePackage.cost;
 		body1.sprite.gamePackage.damage();
 		body1.sprite.alreadyDamaged = true;

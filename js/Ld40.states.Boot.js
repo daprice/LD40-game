@@ -37,6 +37,9 @@ Ld40.states.Boot.prototype = {
 		this.load.image('tilemap', 'img/tilemap.png');
 		
 		this.load.audio('background', 'audio/background.mp3');
+		this.load.audio('carthit', 'audio/carthit.mp3');
+		this.load.audio('boxhit', 'audio/boxhit.mp3');
+		this.load.audio('boxdrop', 'audio/boxdrop.mp3');
 	},
 	
 	create: function() {

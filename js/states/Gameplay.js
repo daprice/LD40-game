@@ -1,10 +1,7 @@
 "use strict"
 
 import {Player} from '../entities/Player.js';
-import {Table} from '../entities/Table.js';
-import {ServingTable} from '../entities/ServingTable.js';
-import {Chair} from '../entities/Chair.js';
-import {Checkout} from '../entities/Checkout.js';
+import {Furniture} from '../entities/Furniture.js';
 import {Box} from '../entities/Box.js';
 import {GamePackage} from '../components/GamePackage.js';
 
@@ -184,9 +181,9 @@ export class Gameplay{
 		//place tables and chairs in restaurant
 		var setTable = (x, y) => {
 			var rand = [Math.random(), Math.random(), Math.random()];
-			this.game.add.existing(new Table(this.game, x, y)).body.angle = rand[0]*2-1;
-			this.game.add.existing(new Chair(this.game, x, y+30)).body.angle = 180 + (rand[1]*10-5);
-			this.game.add.existing(new Chair(this.game, x, y-26)).body.angle = rand[2]*10-5;
+			this.game.add.existing(new Furniture(this.game, x, y, 'table')).body.angle = rand[0]*2-1;
+			this.game.add.existing(new Furniture(this.game, x, y+30, 'chair')).body.angle = 180 + (rand[1]*10-5);
+			this.game.add.existing(new Furniture(this.game, x, y-26, 'chair')).body.angle = rand[2]*10-5;
 		};
 		
 		var placeBox = (type, x, y) => {
@@ -235,9 +232,9 @@ export class Gameplay{
 		setTable(170, 1371);
 		setTable(232, 1370);
 		
-		this.game.add.existing(new ServingTable(this.game, 130,1110));
+		this.game.add.existing(new Furniture(this.game, 130,1110, 'serving'));
 		
-		this.game.add.existing(new Checkout(this.game, 1300,150));
+		this.game.add.existing(new Furniture(this.game, 1300,150, 'checkout'));
 		
 		//decor area 1
 		placeBox("lurt", 270, 380);

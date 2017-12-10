@@ -1,5 +1,15 @@
-game = new Phaser.Game(Ld40.phaserConfig);
+const PHASER_CONFIG = {
+	parent: 'game',
+	width: '100%',
+	height: '100%',
+	renderer: Phaser.AUTO
+};
 
-game.state.add('Ld40.states.Boot', Ld40.states.Boot)
-game.state.add('Ld40.states.Gameplay', Ld40.states.Gameplay);
-game.state.start('Ld40.states.Boot');
+import {Boot} from './states/Boot.js';
+import {Gameplay} from './states/Gameplay.js';
+
+var game = new Phaser.Game(PHASER_CONFIG);
+
+game.state.add('Boot', Boot);
+game.state.add('Gameplay', Gameplay);
+game.state.start('Boot', true, false, 'Gameplay');

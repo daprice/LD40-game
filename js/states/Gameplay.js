@@ -1,7 +1,13 @@
-Ld40.states.Gameplay = function() {};
+import {Player} from '../entities/Player.js';
+import {Table} from '../entities/Table.js';
+import {ServingTable} from '../entities/ServingTable.js';
+import {Chair} from '../entities/Chair.js';
+import {Checkout} from '../entities/Checkout.js';
+import {Box} from '../entities/Box.js';
+import {GamePackage} from '../components/GamePackage.js';
 
-Ld40.states.Gameplay.prototype = {
-	create: function() {
+export class Gameplay{
+	create() {
 		
 		//set up physics
 		this.game.physics.startSystem(Phaser.Physics.P2JS);
@@ -41,7 +47,7 @@ Ld40.states.Gameplay.prototype = {
 		
 		//entities
 		
-		this.player = this.game.add.existing(new Ld40.entities.Player(this.game, 90, 60));
+		this.player = this.game.add.existing(new Player(this.game, 90, 60));
 		
 		this.setupLevel();
 		
@@ -96,9 +102,9 @@ Ld40.states.Gameplay.prototype = {
 		//audio
 		this.bg = this.game.add.audio('background');
 		this.bg.play('', 0, 0.1, true);
-	},
+	}
 	
-	update: function() {
+	update() {
 		for(var t = 0; t < this.transactionTexts.length; t++) {
 			this.transactionTexts[t].frames += 1;
 			this.transactionTexts[t].text.y -= 2;
@@ -118,9 +124,9 @@ Ld40.states.Gameplay.prototype = {
 		else {
 			this.hungerText.fill = "white";
 		}
-	},
+	}
 	
-	updateReceipt: function() {
+	updateReceipt() {
 		var priceTotal = 0;
 		var receiptText = '';
 		for(var item of this.player.itemizedReceipt) {
@@ -135,9 +141,9 @@ Ld40.states.Gameplay.prototype = {
 		
 		this.priceTotal.setText('$' + priceTotal.toFixed(2));
 		this.itemizedList.setText(receiptText);
-	},
+	}
 	
-	showTransaction: function(value, extraText, textColor = 0x00ff00) {
+	showTransaction(value, extraText, textColor = 0x00ff00) {
 		var theText = "$" + value.toFixed(2);
 		if(value < 0) {
 			theText = "-" + theText;
@@ -158,64 +164,64 @@ Ld40.states.Gameplay.prototype = {
 		});
 		
 		
-	},
+	}
 	
-	endGame: function(win = false, message = "Game over") {
+	endGame(win = false, message = "Game over") {
 		this.game.paused = true;
 		this.bg.stop();
 		
 		alert(message);
-	},
+	}
 	
-	addDroppedItem: function(theItem) {
+	addDroppedItem(theItem) {
 		this.game.add.existing(theItem);
-	},
+	}
 	
 	//huge ugly function that puts all the furniture and boxes in their place
-	setupLevel: function() {
+	setupLevel() {
 		//place tables and chairs in restaurant
-		var setTable = function(x, y) {
+		var setTable = (x, y) => {
 			var rand = [Math.random(), Math.random(), Math.random()];
-			this.game.add.existing(new Ld40.entities.Table(this.game, x, y)).body.angle = rand[0]*2-1;
-			this.game.add.existing(new Ld40.entities.Chair(this.game, x, y+30)).body.angle = 180 + (rand[1]*10-5);
-			this.game.add.existing(new Ld40.entities.Chair(this.game, x, y-26)).body.angle = rand[2]*10-5;
+			this.game.add.existing(new Table(this.game, x, y)).body.angle = rand[0]*2-1;
+			this.game.add.existing(new Chair(this.game, x, y+30)).body.angle = 180 + (rand[1]*10-5);
+			this.game.add.existing(new Chair(this.game, x, y-26)).body.angle = rand[2]*10-5;
 		};
 		
-		var placeBox = function(type, x, y) {
+		var placeBox = (type, x, y) => {
 			var thePackage;
 			switch(type) {
 				case "snorg":
-					thePackage = new Ld40.objects.GamePackage(70, "Snörg", 299, "snorg");
+					thePackage = new GamePackage(70, "Snörg", 299, "snorg");
 					break;
 				case "borgle":
-					thePackage = new Ld40.objects.GamePackage(10, "Borgle", 45, "borgle");
+					thePackage = new GamePackage(10, "Borgle", 45, "borgle");
 					break;
 				case "lurt":
-					thePackage = new Ld40.objects.GamePackage(5, "Lürt", 32, "lurt");
+					thePackage = new GamePackage(5, "Lürt", 32, "lurt");
 					break;
 				case "lava":
-					thePackage = new Ld40.objects.GamePackage(7, "Låva", 20, "lava");
+					thePackage = new GamePackage(7, "Låva", 20, "lava");
 					break;
 				case "pulf":
-					thePackage = new Ld40.objects.GamePackage(10, "Pulf", 29, "pulf");
+					thePackage = new GamePackage(10, "Pulf", 29, "pulf");
 					break;
 				case "fleeb":
-					thePackage = new Ld40.objects.GamePackage(20, "Flëeb", 89, "fleeb");
+					thePackage = new GamePackage(20, "Flëeb", 89, "fleeb");
 					break;
 				case "borger":
-					thePackage = new Ld40.objects.GamePackage(40, "Borger", 169, "borger");
+					thePackage = new GamePackage(40, "Borger", 169, "borger");
 					break;
 				case "blarg":
-					thePackage = new Ld40.objects.GamePackage(30, "Blarg", 59, "blarg");
+					thePackage = new GamePackage(30, "Blarg", 59, "blarg");
 					break;
 				case "bork":
-					thePackage = new Ld40.objects.GamePackage(8, "Bork", 61, "bork");
+					thePackage = new GamePackage(8, "Bork", 61, "bork");
 					break;
 				default:
 					console.warn("Generic pacakge placed at ", x, y);
-					thePackage = new Ld40.objects.GamePackage();
+					thePackage = new GamePackage();
 			}
-			this.game.add.existing(new Ld40.entities.Box(this.game, x, y, thePackage));
+			this.game.add.existing(new Box(this.game, x, y, thePackage));
 		};
 		
 		setTable(50, 1270);
@@ -227,9 +233,9 @@ Ld40.states.Gameplay.prototype = {
 		setTable(170, 1371);
 		setTable(232, 1370);
 		
-		this.game.add.existing(new Ld40.entities.ServingTable(this.game, 130,1110));
+		this.game.add.existing(new ServingTable(this.game, 130,1110));
 		
-		this.game.add.existing(new Ld40.entities.Checkout(this.game, 1300,150));
+		this.game.add.existing(new Checkout(this.game, 1300,150));
 		
 		//decor area 1
 		placeBox("lurt", 270, 380);

@@ -1,24 +1,9 @@
-var Ld40 = {
-	phaserConfig: {
-		parent: 'game',
-		width: '100%',
-		height: '100%',
-		renderer: Phaser.AUTO
-	},
+export class Boot {
+	init(nextState) {
+		this.nextState = nextState;
+	}
 	
-	states: {},
-	entities: {},
-	objects: {}
-};
-
-Ld40.states.Boot = function() {};
-
-Ld40.states.Boot.prototype = {
-	init: function() {
-		
-	},
-	
-	preload: function() {
+	preload() {
 		this.load.image('ground', 'img/ground.png');
 		this.load.image('landscape', 'img/landscape.png');
 		this.load.image('decoration', 'img/decoration.png');
@@ -45,19 +30,20 @@ Ld40.states.Boot.prototype = {
 		this.load.audio('carthit', 'audio/carthit.mp3');
 		this.load.audio('boxhit', 'audio/boxhit.mp3');
 		this.load.audio('boxdrop', 'audio/boxdrop.mp3');
-	},
+	}
 	
-	create: function() {
+	create() {
 		
-	},
+	}
 	
-	update: function() {
+	update() {
 		if(this.allSoundsDecoded()) {
-			this.state.start('Ld40.states.Gameplay');
+			this.state.start(this.nextState);
 		}
-	},
+	}
 	
-	allSoundsDecoded: function() {
+	allSoundsDecoded() {
+		//TODO: something
 		//if(this.cache.isSoundDecoded('someSound') {
 		return true;
 	}

@@ -1,3 +1,5 @@
+"use strict"
+
 export class Chair extends Phaser.Sprite {
 	constructor(game, x = 0, y = 0) {
 		super(game, x, y, 'chair');

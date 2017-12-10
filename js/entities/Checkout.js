@@ -1,3 +1,5 @@
+"use strict"
+
 import {GamePackage} from '../components/GamePackage.js';
 
 export class Checkout extends Phaser.Sprite {

@@ -1,3 +1,5 @@
+"use strict"
+
 import {Box} from './Box.js';
 
 export class Player extends Phaser.Sprite {

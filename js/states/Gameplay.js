@@ -1,3 +1,5 @@
+"use strict"
+
 import {Player} from '../entities/Player.js';
 import {Table} from '../entities/Table.js';
 import {ServingTable} from '../entities/ServingTable.js';

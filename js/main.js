@@ -1,3 +1,5 @@
+"use strict"
+
 const PHASER_CONFIG = {
 	parent: 'game',
 	width: '100%',

@@ -1,3 +1,5 @@
+"use strict"
+
 export class Boot {
 	init(nextState) {
 		this.nextState = nextState;

@@ -1,3 +1,5 @@
+"use strict"
+
 //represents a flat-packed piece of furniture
 export class GamePackage {
 	constructor(mass = 10, name = "Borker", cost = 50, image = "box", alreadyPurchased = false) {

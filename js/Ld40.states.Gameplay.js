@@ -95,7 +95,7 @@ Ld40.states.Gameplay.prototype = {
 		
 		//audio
 		this.bg = this.game.add.audio('background');
-		this.bg.play('', 0, 0.1, true);
+		//this.bg.play('', 0, 0.1, true);
 	},
 	
 	update: function() {

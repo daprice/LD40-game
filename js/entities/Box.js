@@ -1,10 +1,11 @@
 "use strict"
 
 import {GamePackage} from '../components/GamePackage.js';
+import {PACKAGE_TYPES} from '../components/GamePackage.js';
 
 export class Box extends Phaser.Sprite {
-	constructor(game, x = 0, y = 0, theGamePackage, loose = true) {
-		var gamePackage = theGamePackage || new GamePackage();
+	constructor(game, x = 0, y = 0, gamePackageOpts = {}, loose = true) {
+		var gamePackage = new GamePackage(gamePackageOpts);
 		
 		super(game, x, y, gamePackage.image);
 		this.gamePackage = gamePackage;
@@ -29,5 +30,10 @@ export class Box extends Phaser.Sprite {
 		super.update.call(this);
 		
 		
+	}
+	
+	static place(game, type, x, y) {
+		const typeOptions = PACKAGE_TYPES[type] || {};
+		game.add.existing(new Box(game, x, y, typeOptions));
 	}
 };

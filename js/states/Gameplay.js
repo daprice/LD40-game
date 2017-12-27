@@ -3,7 +3,6 @@
 import {Player} from '../entities/Player.js';
 import {Furniture} from '../entities/Furniture.js';
 import {Box} from '../entities/Box.js';
-import {GamePackage} from '../components/GamePackage.js';
 
 export class Gameplay{
 	create() {
@@ -178,138 +177,95 @@ export class Gameplay{
 	
 	//huge ugly function that puts all the furniture and boxes in their place
 	setupLevel() {
+		
 		//place tables and chairs in restaurant
-		var setTable = (x, y) => {
-			var rand = [Math.random(), Math.random(), Math.random()];
-			this.game.add.existing(new Furniture(this.game, x, y, 'table')).body.angle = rand[0]*2-1;
-			this.game.add.existing(new Furniture(this.game, x, y+30, 'chair')).body.angle = 180 + (rand[1]*10-5);
-			this.game.add.existing(new Furniture(this.game, x, y-26, 'chair')).body.angle = rand[2]*10-5;
-		};
-		
-		var placeBox = (type, x, y) => {
-			var thePackage;
-			switch(type) {
-				case "snorg":
-					thePackage = new GamePackage(70, "Snörg", 299, "snorg");
-					break;
-				case "borgle":
-					thePackage = new GamePackage(10, "Borgle", 45, "borgle");
-					break;
-				case "lurt":
-					thePackage = new GamePackage(5, "Lürt", 32, "lurt");
-					break;
-				case "lava":
-					thePackage = new GamePackage(7, "Låva", 20, "lava");
-					break;
-				case "pulf":
-					thePackage = new GamePackage(10, "Pulf", 29, "pulf");
-					break;
-				case "fleeb":
-					thePackage = new GamePackage(20, "Flëeb", 89, "fleeb");
-					break;
-				case "borger":
-					thePackage = new GamePackage(40, "Borger", 169, "borger");
-					break;
-				case "blarg":
-					thePackage = new GamePackage(30, "Blarg", 59, "blarg");
-					break;
-				case "bork":
-					thePackage = new GamePackage(8, "Bork", 61, "bork");
-					break;
-				default:
-					console.warn("Generic pacakge placed at ", x, y);
-					thePackage = new GamePackage();
-			}
-			this.game.add.existing(new Box(this.game, x, y, thePackage));
-		};
-		
-		setTable(50, 1270);
-		setTable(110, 1266);
-		setTable(170, 1271);
-		setTable(232, 1270);
-		setTable(50, 1370);
-		setTable(110, 1366);
-		setTable(170, 1371);
-		setTable(232, 1370);
+		Furniture.setTable(this.game, 50, 1270);
+		Furniture.setTable(this.game, 110, 1266);
+		Furniture.setTable(this.game, 170, 1271);
+		Furniture.setTable(this.game, 232, 1270);
+		Furniture.setTable(this.game, 50, 1370);
+		Furniture.setTable(this.game, 110, 1366);
+		Furniture.setTable(this.game, 170, 1371);
+		Furniture.setTable(this.game, 232, 1370);
 		
 		this.game.add.existing(new Furniture(this.game, 130,1110, 'serving'));
 		
 		this.game.add.existing(new Furniture(this.game, 1300,150, 'checkout'));
 		
 		//decor area 1
-		placeBox("lurt", 270, 380);
-		placeBox("lurt", 290, 380);
-		placeBox('lurt', 310, 380);
-		placeBox('lurt', 332, 381);
-		placeBox('lava', 355, 380);
+		Box.place(this.game, "lurt", 270, 380);
+		Box.place(this.game, "lurt", 290, 380);
+		Box.place(this.game, 'lurt', 310, 380);
+		Box.place(this.game, 'lurt', 332, 381);
+		Box.place(this.game, 'lava', 355, 380);
 		
 		//dining
-		placeBox('borger', 50, 730);
-		placeBox('borger', 50, 790);
-		placeBox('borger', 100, 750);
-		placeBox('borgle', 80, 745);
-		placeBox('borgle', 80, 780);
-		placeBox('borger', 130, 730);
-		placeBox('borger', 130, 790);
-		placeBox('borger', 180, 750);
-		placeBox('borgle', 160, 745);
-		placeBox('borgle', 160, 780);
-		placeBox('borger', 370, 730);
-		placeBox('borger', 370, 790);
-		placeBox('borger', 420, 750);
-		placeBox('borgle', 430, 745);
-		placeBox('borgle', 430, 780);
-		placeBox('bork', 550, 640);
-		placeBox('bork', 550, 680);
-		placeBox('bork', 540, 710);
+		Box.place(this.game, 'borger', 50, 730);
+		Box.place(this.game, 'borger', 50, 790);
+		Box.place(this.game, 'borger', 100, 750);
+		Box.place(this.game, 'borgle', 80, 745);
+		Box.place(this.game, 'borgle', 80, 780);
+		Box.place(this.game, 'borger', 130, 730);
+		Box.place(this.game, 'borger', 130, 790);
+		Box.place(this.game, 'borger', 180, 750);
+		Box.place(this.game, 'borgle', 160, 745);
+		Box.place(this.game, 'borgle', 160, 780);
+		Box.place(this.game, 'borger', 370, 730);
+		Box.place(this.game, 'borger', 370, 790);
+		Box.place(this.game, 'borger', 420, 750);
+		Box.place(this.game, 'borgle', 430, 745);
+		Box.place(this.game, 'borgle', 430, 780);
+		Box.place(this.game, 'bork', 550, 640);
+		Box.place(this.game, 'bork', 550, 680);
+		Box.place(this.game, 'bork', 540, 710);
 		
 		//storage 1
-		placeBox('fleeb', 320, 50);
-		placeBox('pulf', 390, 53);
-		placeBox('pulf', 392, 75);
-		placeBox('fleeb', 990, 60);
+		Box.place(this.game, 'fleeb', 320, 50);
+		Box.place(this.game, 'pulf', 390, 53);
+		Box.place(this.game, 'pulf', 392, 75);
+		Box.place(this.game, 'fleeb', 990, 60);
 		
 		//living
-		placeBox('lurt', 830, 530);
-		placeBox('lurt', 830, 670);
-		placeBox('blarg', 880, 540);
-		placeBox('blarg', 870, 620);
-		placeBox('pulf', 880, 760);
-		placeBox('pulf', 890, 820);
+		Box.place(this.game, 'lurt', 830, 530);
+		Box.place(this.game, 'lurt', 830, 670);
+		Box.place(this.game, 'blarg', 880, 540);
+		Box.place(this.game, 'blarg', 870, 620);
+		Box.place(this.game, 'pulf', 880, 760);
+		Box.place(this.game, 'pulf', 890, 820);
 		
 		//bedroom
-		placeBox('snorg', 580, 990);
-		placeBox('snorg', 530, 1000);
-		placeBox('snorg', 450, 950);
-		placeBox('snorg', 390, 950);
-		placeBox('snorg', 400, 990);
-		placeBox('snorg', 490, 990);
+		Box.place(this.game, 'snorg', 580, 990);
+		Box.place(this.game, 'snorg', 530, 1000);
+		Box.place(this.game, 'snorg', 450, 950);
+		Box.place(this.game, 'snorg', 390, 950);
+		Box.place(this.game, 'snorg', 400, 990);
+		Box.place(this.game, 'snorg', 490, 990);
 		
 		//decor area 2
-		placeBox('lava', 560, 1260);
-		placeBox('lava', 560, 1230);
-		placeBox('lava', 560, 1190);
-		placeBox('lurt', 560, 1150);
-		placeBox('lurt', 590, 1150);
-		placeBox('lurt', 630, 1150);
-		placeBox('lava', 670, 1140);
-		placeBox('lava', 670, 1170);
-		placeBox('lava', 710, 1130);
-		placeBox('lava', 710, 1170);
+		Box.place(this.game, 'lava', 560, 1260);
+		Box.place(this.game, 'lava', 560, 1230);
+		Box.place(this.game, 'lava', 560, 1190);
+		Box.place(this.game, 'lurt', 560, 1150);
+		Box.place(this.game, 'lurt', 590, 1150);
+		Box.place(this.game, 'lurt', 630, 1150);
+		Box.place(this.game, 'lava', 670, 1140);
+		Box.place(this.game, 'lava', 670, 1170);
+		Box.place(this.game, 'lava', 710, 1130);
+		Box.place(this.game, 'lava', 710, 1170);
 		
 		//storage 2
-		placeBox('snorg', 870, 970);
-		placeBox('fleeb', 910, 970);
-		placeBox('borgle', 860, 1380);
-		placeBox('pulf', 890, 1330);
-		placeBox('blarg', 1030, 1020);
-		placeBox('fleeb', 1110, 1080);
-		placeBox('blarg', 1310, 1140);
-		placeBox('lava', 1110, 900);
-		placeBox('borgle', 1310, 920);
-		placeBox('borgle', 1310, 880);
-		placeBox('borger', 1020, 780);
-		placeBox('borger', 1090, 770);
-		placeBox('snorg', 1120, 540);
+		Box.place(this.game, 'snorg', 870, 970);
+		Box.place(this.game, 'fleeb', 910, 970);
+		Box.place(this.game, 'borgle', 860, 1380);
+		Box.place(this.game, 'pulf', 890, 1330);
+		Box.place(this.game, 'blarg', 1030, 1020);
+		Box.place(this.game, 'fleeb', 1110, 1080);
+		Box.place(this.game, 'blarg', 1310, 1140);
+		Box.place(this.game, 'lava', 1110, 900);
+		Box.place(this.game, 'borgle', 1310, 920);
+		Box.place(this.game, 'borgle', 1310, 880);
+		Box.place(this.game, 'borger', 1020, 780);
+		Box.place(this.game, 'borger', 1090, 770);
+		Box.place(this.game, 'snorg', 1120, 540);
 	}
 }

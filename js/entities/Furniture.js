@@ -17,13 +17,13 @@ const FURNITURE_TYPES = {
 		mass: 6000,
 		damping: 0.999,
 		angularDamping: 0.999,
-		makeGamePackage: () => new GamePackage(0, 'Meatballs', 5.99)
+		gamePackageOpts: {mass: 0, name: "Meatballs", price: 5.99}
 	},
 	'checkout': {
 		mass: 60000,
 		damping: 0.999,
 		angularDamping: 0.999,
-		makeGamePackage: () => new GamePackage(0, 'Check out', 1000)
+		gamePackageOpts: {mass: 0, name: "Check out", price: 1000}
 	}
 };
 
@@ -37,8 +37,15 @@ export class Furniture extends Phaser.Sprite {
 		this.body.damping = FURNITURE_TYPES[type].damping;
 		this.body.angularDamping = FURNITURE_TYPES[type].angularDamping;
 		
-		if(FURNITURE_TYPES[type].makeGamePackage) {
-			this.gamePackage = FURNITURE_TYPES[type].makeGamePackage();
+		if(FURNITURE_TYPES[type].gamePackageOpts) {
+			this.gamePackage = new GamePackage(FURNITURE_TYPES[type].gamePackageOpts);
 		}
+	}
+	
+	static setTable(game, x, y) {
+		const rand = [Math.random(), Math.random(), Math.random()];
+		game.add.existing(new Furniture(game, x, y, 'table')).body.angle = rand[0]*2-1;
+		game.add.existing(new Furniture(game, x, y+30, 'chair')).body.angle = 180 + (rand[1]*10-5);
+		game.add.existing(new Furniture(game, x, y-26, 'chair')).body.angle = rand[2]*10-5;
 	}
 };
